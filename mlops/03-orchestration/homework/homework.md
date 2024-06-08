@@ -12,6 +12,8 @@ What's the version of Mage we run?
 
 (You can see it in the UI)
 
+- **v0.9.71**
+
 
 ## Question 2. Creating a project
 
@@ -21,7 +23,7 @@ How many lines are in the created `metadata.yaml` file?
 
 - 35
 - 45
-- 55
+- **55**
 - 65
 
 ## Question 3. Creating a pipeline
@@ -34,7 +36,7 @@ How many records did we load?
 
 - 3,003,766
 - 3,203,766
-- 3,403,766
+- **3,403,766**
 - 3,603,766
 
 ## Question 4. Data preparation
