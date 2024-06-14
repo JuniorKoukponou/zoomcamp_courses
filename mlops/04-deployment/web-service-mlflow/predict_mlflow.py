@@ -1,5 +1,6 @@
 import pickle
 from flask import Flask, request, jsonify
+import mlflow
 
 
 with open('./model/lin_reg.bin', 'rb') as file_input:
