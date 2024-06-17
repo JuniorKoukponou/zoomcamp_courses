@@ -15,7 +15,7 @@ Run this notebook for the March 2023 data.
 What's the standard deviation of the predicted duration for this dataset?
 
 * 1.24
-* 6.24
+* **6.24**
 * 12.28
 * 18.28
 
@@ -48,7 +48,7 @@ What's the size of the output file?
 * 36M
 * 46M
 * 56M
-* 66M
+* **66M**
 
 __Note:__ Make sure you use the snippet above for saving the file. It should contain only these two columns. For this question, don't change the
 dtypes of the columns and use `pyarrow`, not `fastparquet`. 
@@ -74,6 +74,7 @@ dependencies we use for the virtual env.
 
 What's the first hash for the Scikit-Learn dependency?
 
+**"sha256:057b991ac64b3e75c9c04b5f9395eaf19a6179244c089afdebaad98264bff37c"**
 
 ## Q5. Parametrize the script
 
@@ -85,7 +86,7 @@ Run the script for April 2023.
 What's the mean predicted duration? 
 
 * 7.29
-* 14.29
+* **14.29**
 * 21.29
 * 28.29
 
@@ -127,7 +128,7 @@ to use the pickle file already in the image.
 Now run the script with docker. What's the mean predicted duration
 for May 2023? 
 
-* 0.19
+* **0.19**
 * 7.24
 * 14.24
 * 21.19

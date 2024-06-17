@@ -20,8 +20,9 @@ logger = logging.getLogger(__name__)
 
 
 def read_data(year, month):
-    filename = f"./yellow_tripdata_{year:04d}-{month:02d}.parquet"
+    filename = f'http://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{year:04d}-{month:02d}.parquet'
     # f'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{year:04d}-{month:02d}.parquet'
+    logger.info(f'reading yellow trip data from {filename}...')
     df = pd.read_parquet(filename, engine='pyarrow')
     
     df['duration'] = df.tpep_dropoff_datetime - df.tpep_pickup_datetime
@@ -42,7 +43,6 @@ def prepare_dictionaries(df: pd.DataFrame):
     
     df['PU_DO'] = df['PULocationID'] + '_' + df['DOLocationID']
 
-    categorical = ['PU_DO']
     dicts = df[categorical].to_dict(orient='records')
     return dicts
 
@@ -62,7 +62,6 @@ def save_results(df, y_pred, output_file, engine='pyarrow'):
 
 
 def apply_model(year, month, model_path, output_file):
-    logger.info(f'reading yellow trip data of year: {year} month: {month}...')
     df = read_data(year, month)
     dicts = prepare_dictionaries(df)
 
@@ -87,8 +86,8 @@ def apply_model(year, month, model_path, output_file):
 @click.option('--month', default=3, help='Data month.')
 def run(year, month):
     model_path = f'./model.bin'
-    output_file = f's3://nyc-duration-prediction-val/yellow_tripdata_{year:04d}_{month:02d}_prediction.parquet'
-    # 
+    output_file = f'./output/yellow_tripdata_{year:04d}_{month:02d}_prediction.parquet'
+    # s3://nyc-duration-prediction-val
     apply_model(year, month, model_path, output_file)
 
 if __name__ == '__main__':
