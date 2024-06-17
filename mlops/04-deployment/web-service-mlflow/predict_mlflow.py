@@ -1,34 +1,42 @@
+import os
 import pickle
-from flask import Flask, request, jsonify
+
 import mlflow
+from flask import Flask, request, jsonify
 
 
-with open('./model/lin_reg.bin', 'rb') as file_input:
-    (dv, model) = pickle.load(file_input)
+# RUN_ID = os.getenv('RUN_ID')
+RUN_ID = "57db38f168e342cfa916bff9f7953a03"
+logged_model = f's3://mlflow-models-valval/174232467941290416/{RUN_ID}/artifacts/model'
+# logged_model = f'runs:/{RUN_ID}/model'
+model = mlflow.pyfunc.load_model(logged_model)
+
 
 def prepare_features(ride):
-    features = dict()
-    features["PU_DO"] = '%s_%s' % (ride['PULocationID'], ride['DOLocationID'])
-    features["trip_distance"] = ride["trip_distance"]
-    print(features)
+    features = {}
+    features['PU_DO'] = '%s_%s' % (ride['PULocationID'], ride['DOLocationID'])
+    features['trip_distance'] = ride['trip_distance']
     return features
 
 
 def predict(features):
-    X = dv.transform(features)
-    prediction = model.predict(X)
-    return prediction[0]
+    preds = model.predict(features)
+    return float(preds[0])
 
-app = Flask("duration-prediction")
 
-@app.route("/predict", methods=["POST"])
+app = Flask('duration-prediction')
+
+
+@app.route('/predict', methods=['POST'])
 def predict_endpoint():
-    """take web request and return the prediction"""
     ride = request.get_json()
+
     features = prepare_features(ride)
-    preds = predict(features)
+    pred = predict(features)
+
     result = {
-        "duration": preds
+        'duration': pred,
+        'model_version': RUN_ID
     }
 
     return jsonify(result)

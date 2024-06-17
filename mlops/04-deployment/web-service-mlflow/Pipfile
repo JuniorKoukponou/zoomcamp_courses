@@ -8,9 +8,11 @@ scikit-learn = "==1.0.2"
 flask = "*"
 gunicorn = "*"
 mlflow = "*"
+boto3 = "*"
 
 [dev-packages]
 requests = "*"
+jupyter = "*"
 
 [requires]
 python_version = "3.9"
