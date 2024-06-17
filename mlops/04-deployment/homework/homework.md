@@ -60,6 +60,7 @@ Now let's turn the notebook into a script.
 
 Which command you need to execute for that?
 
+**python ./homework/scoring.py --year 2023 --month 4**
 
 ## Q4. Virtual environment
 

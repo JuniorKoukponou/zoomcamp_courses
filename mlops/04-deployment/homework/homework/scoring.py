@@ -87,7 +87,8 @@ def apply_model(year, month, model_path, output_file):
 def run(year, month):
     model_path = f'./model.bin'
     output_file = f'./output/yellow_tripdata_{year:04d}_{month:02d}_prediction.parquet'
-    # s3://nyc-duration-prediction-val
+    # output_file = f's3://nyc-duration-prediction-val/yellow_tripdata_{year:04d}_{month:02d}_prediction.parquet'
+
     apply_model(year, month, model_path, output_file)
 
 if __name__ == '__main__':
