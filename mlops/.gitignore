@@ -1,7 +1,12 @@
 # General
+
 .DS_Store
 .AppleDouble
 .LSOverride
+
+./data
+*.parquet
+*.csv
 
 # Icon must end with two \r
 Icon
