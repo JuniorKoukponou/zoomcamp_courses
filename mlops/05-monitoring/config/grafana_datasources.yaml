@@ -1,7 +1,7 @@
 # config file version
 apiVersion: 1
 
-# list of datatsources to insert/update
+# list of datasources to insert/update
 # available in the database
 datasources:
   - name: PostgreSQL
