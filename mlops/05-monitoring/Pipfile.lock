@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "32a3fb9a2724a0ea4ade087795db889b36958209628cc21f5ed0561ff436fd9e"
+            "sha256": "525e00aee341b2eacaf3ac29d290cbab63e775e5be1340a17e173158ca871163"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -557,19 +557,19 @@
         },
         "email-validator": {
             "hashes": [
-                "sha256:14c0f3d343c4beda37400421b39fa411bbe33a75df20825df73ad53e06a9f04c",
-                "sha256:d89f6324e13b1e39889eab7f9ca2f91dc9aebb6fa50a6d8bd4329ab50f251115"
+                "sha256:561977c2d73ce3611850a06fa56b414621e0c8faa9d66f2611407d87465da631",
+                "sha256:cb690f344c617a714f22e66ae771445a1ceb46821152df8e165c5f9a364582b7"
             ],
-            "version": "==2.1.2"
+            "version": "==2.2.0"
         },
         "evidently": {
             "hashes": [
-                "sha256:b0fc5362a44ff6930d5f67d4d97f462b03090cc0ede62e57b326b172f4ec2c79",
-                "sha256:b4bcc64de351fa76662f5ebe59a4929c94942daffb1bf228a8ac501286d203a4"
+                "sha256:35099a0c360088128bf40fb3bf951adae74ef082776fea2ad0da1f85caa59a11",
+                "sha256:cad0bda78ee63abdc978998d3c03f7d8fe8a5357d7575b840465543f7e40fd62"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==0.4.27"
+            "version": "==0.4.28"
         },
         "exceptiongroup": {
             "hashes": [
@@ -589,11 +589,11 @@
         },
         "faker": {
             "hashes": [
-                "sha256:4c40b34a9c569018d4f9d6366d71a4da8a883d5ddf2b23197be5370f29b7e1b6",
-                "sha256:bdec5f2fb057d244ebef6e0ed318fea4dcbdf32c3a1a010766fc45f5d68fc68d"
+                "sha256:5a4cad0cbff4d38cb8c4ba565c3cb6ff12c76c00a80b7503c2ba23d6312cfe60",
+                "sha256:f86d3c66a83c2f25a9d3217d1c456ecbb2b186a78b645aa6038b49907f6fa31a"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==25.8.0"
+            "version": "==25.9.0"
         },
         "fastjsonschema": {
             "hashes": [
