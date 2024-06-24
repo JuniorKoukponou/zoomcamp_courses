@@ -23,6 +23,7 @@ create table dummy_metrics(
 )
 """
 
+
 def prep_db():
 	with psycopg.connect("host=localhost port=5432 user=postgres password=example", autocommit=True) as conn:
 		res = conn.execute("SELECT 1 FROM pg_database WHERE datname='test'")
@@ -30,6 +31,7 @@ def prep_db():
 			conn.execute("create database test;")
 		with psycopg.connect("host=localhost port=5432 dbname=test user=postgres password=example") as conn:
 			conn.execute(create_table_statement)
+
 
 def calculate_dummy_metrics_postgresql(curr):
 	value1 = rand.randint(0, 1000)
@@ -40,6 +42,7 @@ def calculate_dummy_metrics_postgresql(curr):
 		"insert into dummy_metrics(timestamp, value1, value2, value3) values (%s, %s, %s, %s)",
 		(datetime.datetime.now(pytz.timezone('Europe/London')), value1, value2, value3)
 	)
+
 
 def main():
 	prep_db()
