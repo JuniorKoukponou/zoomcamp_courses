@@ -1,9 +1,10 @@
 import os
 import json
-import boto3
 import base64
 
+import boto3
 import mlflow
+
 
 def get_model_location(run_id):
     model_location = os.getenv("MODEL_LOCATION")
@@ -14,15 +15,18 @@ def get_model_location(run_id):
     model_location = f's3://{model_bucket}/{experiment_id}/{run_id}/artifacts/model'
     return model_location
 
+
 def load_model(run_id):
     model_location = get_model_location(run_id=run_id)
     model = mlflow.pyfunc.load_model(model_location)
     return model
 
+
 def base64_decode(encoded_data):
     decoded_data = base64.b64decode(encoded_data).decode('utf-8')
     ride_event = json.loads(decoded_data)
     return ride_event
+
 
 class ModelService:
 
@@ -37,11 +41,9 @@ class ModelService:
         features['trip_distance'] = ride['trip_distance']
         return features
 
-
     def predict(self, features):
         pred = self.model.predict(features)
         return float(pred[0])
-
 
     def lambda_handler(self, event):
         # print(json.dumps(event))
@@ -62,10 +64,7 @@ class ModelService:
             prediction_event = {
                 'model': 'ride_duration_prediction_model',
                 'version': self.model_version,
-                'prediction': {
-                    'ride_duration': prediction,
-                    'ride_id': ride_id
-                }
+                'prediction': {'ride_duration': prediction, 'ride_id': ride_id},
             }
 
             for callback in self.callbacks:
@@ -79,9 +78,8 @@ class ModelService:
 
             predictions_events.append(prediction_event)
 
-        return {
-            'predictions': predictions_events
-        }
+        return {'predictions': predictions_events}
+
 
 class KinesisCallback:
     def __init__(self, kinesis_client, prediction_stream_name) -> None:
@@ -93,8 +91,9 @@ class KinesisCallback:
         self.kinesis_client.put_record(
             StreamName=self.prediction_stream_name,
             Data=json.dumps(prediction_event),
-            PartitionKey=str(ride_id)
-            )
+            PartitionKey=str(ride_id),
+        )
+
 
 def create_kinesis_client():
     endpoint_url = os.getenv('KINESIS_ENDPOINT_URL')
@@ -102,6 +101,8 @@ def create_kinesis_client():
         return boto3.client('kinesis')
 
     return boto3.client('kinesis', endpoint_url=endpoint_url)
+
+
 def init(prediction_stream_name: str, run_id: str, test_run: bool):
     model = load_model(run_id)
 
