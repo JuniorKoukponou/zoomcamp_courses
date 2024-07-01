@@ -5,7 +5,7 @@ RUN pip install pipenv
 
 COPY [ "Pipfile", "Pipfile.lock", "./" ]
 
-RUN pipenv install --system --deploy
+RUN pipenv install --system --deploy --python=3.9
 
 COPY ["model.py", "lambda_function.py", "./" ]
 
