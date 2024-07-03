@@ -9,13 +9,14 @@ pandas = "*"
 pyarrow = "*"
 s3fs = "*"
 click = "*"
-awscli = "*"
+aws = "*"
 
 [dev-packages]
 pytest = "*"
 deepdiff = "*"
-awscli = "*"
+aws = "*"
 boto3 = "*"
+awscli = "*"
 
 [requires]
 python_version = "3.10"

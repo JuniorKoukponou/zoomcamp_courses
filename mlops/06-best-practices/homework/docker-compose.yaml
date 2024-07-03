@@ -4,4 +4,5 @@ services:
     ports:
       - "4566:4566"
     environment:
+      - S3_ENDPOINT_URL=http://localhost:4566
       - SERVICES=s3

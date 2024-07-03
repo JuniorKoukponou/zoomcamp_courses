@@ -23,9 +23,7 @@ def test_prepare_data():
     expected_prepared_data = pd.DataFrame(
         [
             (-1, -1, dt(1, 1), dt(1, 10), 9),
-            (1, 1, dt(1, 2), dt(1, 10), 8)
-            # (1, -1, dt(1, 2, 0), dt(1, 2, 59), 59 / 60),
-            # (3, 4, dt(1, 2, 0), dt(2, 2, 1), 1 / 60),      
+            (1, 1, dt(1, 2), dt(1, 10), 8)  
         ],
         columns=columns + ["duration"])
 

@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import sys
+import os
 import pickle
 import pandas as pd
 import click
-
 
 def read_data(filename):
     df = pd.read_parquet(filename)
@@ -18,9 +17,8 @@ def prepare_data(df, categorical):
     df = df[(df.duration >= 1) & (df.duration <= 60)].copy()
 
     df[categorical] = df[categorical].fillna(-1).astype('int').astype('str')
-    
-    return df
 
+    return df
 
 @click.command()
 @click.option('--year', default=2023, help='Data year')
@@ -57,6 +55,7 @@ def main(year, month):
 
 
     df_result.to_parquet(output_file, engine='pyarrow', index=False)
+
 
 
 if __name__ == '__main__':
