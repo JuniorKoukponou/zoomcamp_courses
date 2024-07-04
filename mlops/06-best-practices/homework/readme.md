@@ -45,3 +45,10 @@ Create fake input data for integration test using `save_df_to_s3.py` script.
 
 ![alt text](image-1.png)
 
+## Q6. Finish the integration test
+
+Let's run the batch.py script for January 2023  `python batch.py --year 2023 --month 1`
+
+![alt text](image-3.png)
+
+![alt text](image-2.png)
