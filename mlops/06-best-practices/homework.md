@@ -6,6 +6,10 @@ reliability of our code with unit and integration tests.
 
 You'll find the starter code in the [homework](homework/) directory.
 
+```bash
+if __name__ == '__main__':
+    main()
+```
 
 ## Q1. Refactoring
 
@@ -47,6 +51,9 @@ What should be the other file?
 Hint: to be able to test `batch.py`, we need to be able to
 import it. Without this other file, we won't be able to do it.
 
+```bash
+__init__.py
+```
 
 ## Q3. Writing first unit test
 
@@ -129,7 +136,7 @@ In both cases we should adjust commands for localstack. What option do we need t
 
 * `--backend-store-uri`
 * `--profile`
-* `--endpoint-url`
+* **`--endpoint-url`**
 * `--version`
 
 
@@ -221,7 +228,7 @@ df_input.to_parquet(
 
 What's the size of the file?
 
-* 3620
+* **3620**
 * 23620
 * 43620
 * 63620

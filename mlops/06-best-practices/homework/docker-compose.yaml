@@ -6,3 +6,4 @@ services:
     environment:
       - S3_ENDPOINT_URL=http://localhost:4566
       - SERVICES=s3
+      

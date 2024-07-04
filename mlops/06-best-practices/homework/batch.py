@@ -6,8 +6,32 @@ import pickle
 import pandas as pd
 import click
 
-def read_data(filename):
-    df = pd.read_parquet(filename)
+S3_ENDPOINT_URL = os.getenv('S3_ENDPOINT_URL')
+OPTIONS = {
+        'client_kwargs': {
+            'endpoint_url': S3_ENDPOINT_URL
+        }
+    }
+
+
+def get_input_path(year, month):
+    default_input_pattern = 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{year:04d}-{month:02d}.parquet'
+    input_pattern = os.getenv('INPUT_FILE_PATTERN', default_input_pattern)
+    return input_pattern.format(year=year, month=month)
+
+
+def get_output_path(year, month):
+    default_output_pattern = 's3://nyc-duration/year_{year:04d}/month_{month:02d}/predictions.parquet'
+    output_pattern = os.getenv('OUTPUT_FILE_PATTERN', default_output_pattern)
+    return output_pattern.format(year=year, month=month)
+
+
+def read_data(input_file):
+    print(f'Loading data from {input_file} ...')
+    if S3_ENDPOINT_URL is not None:
+        df = pd.read_parquet(input_file, storage_options=OPTIONS)
+    else:
+        df = pd.read_parquet(input_file)
     return df
 
 def prepare_data(df, categorical):
@@ -20,14 +44,27 @@ def prepare_data(df, categorical):
 
     return df
 
+
+def save_data(df, year, month, output_file):
+    if S3_ENDPOINT_URL is not None:
+        print(f'Saving df to {output_file}')
+        df.to_parquet(
+            output_file,
+            engine='pyarrow',
+            compression=None,
+            index=False,
+            storage_options=OPTIONS
+        )
+    else:
+        print("Saving df to S3 not succeeded !!!")
+
+
 @click.command()
 @click.option('--year', default=2023, help='Data year')
 @click.option('--month', default=3, help='Data month.')
 def main(year, month):
-
-    input_file = f'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{year:04d}-{month:02d}.parquet'
-    output_file = f'output/yellow_tripdata_{year:04d}-{month:02d}.parquet'
-
+    # input_file = f'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{year:04d}-{month:02d}.parquet'
+    # output_file = f'output/yellow_tripdata_{year:04d}-{month:02d}.parquet'
 
     with open('model.bin', 'rb') as f_in:
         dv, lr = pickle.load(f_in)
@@ -35,8 +72,9 @@ def main(year, month):
 
     categorical = ['PULocationID', 'DOLocationID']
 
-
+    input_file = get_input_path(year, month)
     df = read_data(input_file)
+
     df = prepare_data(df, categorical)
     df['ride_id'] = f'{year:04d}/{month:02d}_' + df.index.astype('str')
 
@@ -53,9 +91,8 @@ def main(year, month):
     df_result['ride_id'] = df['ride_id']
     df_result['predicted_duration'] = y_pred
 
-
-    df_result.to_parquet(output_file, engine='pyarrow', index=False)
-
+    output_file = get_output_path(year, month)
+    save_data(df_result, year, month, output_file)
 
 
 if __name__ == '__main__':
