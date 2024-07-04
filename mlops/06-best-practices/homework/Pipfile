@@ -21,6 +21,9 @@ boto3 = "*"
 awscli = "*"
 localstack = "*"
 ipykernel = "*"
+isort = "*"
+black = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.10"
