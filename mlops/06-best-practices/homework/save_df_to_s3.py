@@ -6,4 +6,4 @@ year = 2023
 month = 1
 
 output_file = get_input_path(year, month)
-save_data(df, year, month, output_file)
+save_data(df, output_file)

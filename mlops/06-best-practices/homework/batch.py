@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import os
+import os, io
 import pickle
 import pandas as pd
 import click
+import requests
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s]: %(message)s")
 
 S3_ENDPOINT_URL = os.getenv('S3_ENDPOINT_URL')
 OPTIONS = {
@@ -21,13 +25,17 @@ def get_input_path(year, month):
 
 
 def get_output_path(year, month):
-    default_output_pattern = 's3://nyc-duration/year_{year:04d}/month_{month:02d}/predictions.parquet'
+    default_output_pattern = './output/year_{year:04d}/month_{month:02d}/predictions.parquet'
     output_pattern = os.getenv('OUTPUT_FILE_PATTERN', default_output_pattern)
     return output_pattern.format(year=year, month=month)
 
 
 def read_data(input_file):
-    print(f'Loading data from {input_file} ...')
+    logging.info(f'Loading data from {input_file} ...')
+    if "https" in input_file:
+        content = requests.get(input_file).content
+        df = pd.read_parquet(io.BytesIO(content))
+        return df
     if S3_ENDPOINT_URL is not None:
         df = pd.read_parquet(input_file, storage_options=OPTIONS)
     else:
@@ -45,9 +53,12 @@ def prepare_data(df, categorical):
     return df
 
 
-def save_data(df, year, month, output_file):
+def save_data(df, output_file):
+    output_path = os.path.dirname(output_file)
+    print("output_path", output_path)
+    os.makedirs(output_path, exist_ok=True)
     if S3_ENDPOINT_URL is not None:
-        print(f'Saving df to {output_file}')
+        logging.info(f'Saving df to {output_file}')
         df.to_parquet(
             output_file,
             engine='pyarrow',
@@ -56,7 +67,13 @@ def save_data(df, year, month, output_file):
             storage_options=OPTIONS
         )
     else:
-        print("Saving df to S3 not succeeded !!!")
+        df.to_parquet(
+            output_file,
+            engine='pyarrow',
+            compression=None,
+            index=False,
+        )
+        logging.info("Saving df to local !!!")
 
 
 @click.command()
@@ -84,15 +101,14 @@ def main(year, month):
     y_pred = lr.predict(X_val)
 
 
-    print('predicted mean duration:', y_pred.mean())
-
+    logging.info(f'predicted mean duration: {y_pred.mean()}')
 
     df_result = pd.DataFrame()
     df_result['ride_id'] = df['ride_id']
     df_result['predicted_duration'] = y_pred
 
     output_file = get_output_path(year, month)
-    save_data(df_result, year, month, output_file)
+    save_data(df_result, output_file)
 
 
 if __name__ == '__main__':

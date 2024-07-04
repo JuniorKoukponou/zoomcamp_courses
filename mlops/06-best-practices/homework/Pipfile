@@ -11,6 +11,7 @@ s3fs = "*"
 click = "*"
 aws = "*"
 localstack = "*"
+requests = "*"
 
 [dev-packages]
 pytest = "*"
@@ -19,6 +20,7 @@ aws = "*"
 boto3 = "*"
 awscli = "*"
 localstack = "*"
+ipykernel = "*"
 
 [requires]
 python_version = "3.10"
